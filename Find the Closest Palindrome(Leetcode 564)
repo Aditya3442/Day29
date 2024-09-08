@@ -1,0 +1,42 @@
+class Solution {
+    public static long findPalindrome(long num,boolean isEven){      
+        long temp=num;
+        if(isEven==false)
+            temp=temp/10;
+        while(temp!=0){
+            num=num*10+temp%10;
+            temp=temp/10;
+        }
+        return num;
+        
+    }
+    public String nearestPalindromic(String n) {
+        int length=n.length();
+        long originalnum=Long.parseLong(n);
+        int len=(length%2==0)?length/2 : length/2+1;
+        
+        String s=n.substring(0,len);
+        long num=Integer.parseInt(s);
+        long[] arr=new long[5];
+        arr[0]=findPalindrome(num,length%2==0);
+        arr[1]=findPalindrome(num+1,length%2==0);
+        arr[2]=findPalindrome(num-1,length%2==0);
+        arr[3]=(long)Math.pow(10,length)+1;
+        arr[4]=(long)Math.pow(10,length-1)-1;
+        
+        long mini=Integer.MAX_VALUE;
+        int index=0;
+        for(int i=0;i<5;i++){
+            if(originalnum!=arr[i] && mini>(long)Math.abs(originalnum-arr[i])){
+                index=i;
+                mini=(int)Math.abs(originalnum-arr[i]);
+            }
+            else if(mini==(long)Math.abs(originalnum-arr[i])){
+                if(arr[i]<arr[index])
+                    index=i;
+            }
+        }
+        
+        return Long.toString(arr[index]);
+    }
+}
